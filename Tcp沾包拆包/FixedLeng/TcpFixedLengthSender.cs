@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TcpDipAndUnpack
+namespace TcpDipAndUnpack.FixedLeng
 {
     public class TcpFixedLengthSender
     {
@@ -15,16 +15,20 @@ namespace TcpDipAndUnpack
 
         public static void SendFixedLengthData()
         {
-            while (true)
+
+            try
             {
-                try
-                {
-                    // 创建TCP套接字
+
+                while (true)
+                {// 创建TCP套接字
                     TcpClient client = new TcpClient();
                     client.Connect(ServerIP, ServerPort);
-
                     NetworkStream stream = client.GetStream();
                     string[] messages = { "message1", "message2", "message3" };
+                    foreach (var m in messages)
+                    {
+                        Console.WriteLine($"send: {m}");
+                    }
 
                     foreach (string msg in messages)
                     {
@@ -40,13 +44,16 @@ namespace TcpDipAndUnpack
 
                     stream.Close();
                     client.Close();
+                    Thread.Sleep(3000);
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"发送数据时出错: {e.Message}");
-                }
+
             }
-           
+            catch (Exception e)
+            {
+                Console.WriteLine($"发送数据时出错: {e.Message}");
+            }
+
+
         }
     }
 }

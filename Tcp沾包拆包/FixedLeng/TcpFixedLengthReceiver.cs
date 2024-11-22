@@ -3,7 +3,7 @@ using System.Net;
 using System.Text;
 
 
-namespace TcpDipAndUnpack
+namespace TcpDipAndUnpack.FixedLeng
 {
     public class TcpFixedLengthReceiver
     {
@@ -13,17 +13,16 @@ namespace TcpDipAndUnpack
 
         public static void ReceiveFixedLengthData()
         {
-            while (true)
+            try
             {
-                try
+                TcpListener server = new TcpListener(IPAddress.Parse(ServerIP), ServerPort);
+                server.Start();
+                // 创建TCP套接字并监听端口
+                while (true)
                 {
-                    // 创建TCP套接字并监听端口
-                    TcpListener server = new TcpListener(IPAddress.Parse(ServerIP), ServerPort);
-                    server.Start();
 
                     TcpClient client = server.AcceptTcpClient();
                     NetworkStream stream = client.GetStream();
-
                     while (true)
                     {
                         byte[] buffer = new byte[FixedLength];
@@ -32,21 +31,20 @@ namespace TcpDipAndUnpack
                         {
                             break;
                         }
-
                         string data = Encoding.ASCII.GetString(buffer).Trim();
                         Console.WriteLine($"Received: {data}");
                     }
-
                     stream.Close();
                     client.Close();
-                    server.Stop();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"接收数据时出错: {e.Message}");
+                    //server.Stop();
                 }
             }
-           
+            catch (Exception e)
+            {
+                Console.WriteLine($"接收数据时出错: {e.Message}");
+            }
+
+
         }
     }
 }
