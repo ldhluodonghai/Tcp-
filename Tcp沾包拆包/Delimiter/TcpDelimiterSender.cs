@@ -16,11 +16,10 @@ namespace TcpDipAndUnpack.Delimiter
         public static void SendDataWithDelimiter()
         {
             try
-            {
-               
-               
+            {                    
                 while (true)
                 {
+                    // 创建TCP套接字
                     TcpClient client = new TcpClient();
                     client.Connect(ServerIP, ServerPort);
 
@@ -36,13 +35,10 @@ namespace TcpDipAndUnpack.Delimiter
                         byte[] data = Encoding.ASCII.GetBytes(dataToSend);
                         stream.Write(data, 0, data.Length);
                     }
-
                     stream.Close();
                     client.Close();
                     Thread.Sleep(1000);
                 }
-                // 创建TCP套接字
-                
             }
             catch (Exception e)
             {

@@ -42,7 +42,6 @@ namespace TcpDipAndUnpack.Delimiter
                         {
                             Console.WriteLine($"Received: {messages[i]}");
                         }
-
                         buffer.Clear();
                         buffer.Append(messages[messages.Length - 1]);
                     }
