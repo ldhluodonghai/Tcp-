@@ -1,4 +1,5 @@
-﻿using TcpDipAndUnpack.FixedLeng;
+﻿using TcpDipAndUnpack.Delimiter;
+using TcpDipAndUnpack.FixedLeng;
 
 namespace TcpDipAndUnpack
 {
@@ -9,8 +10,10 @@ namespace TcpDipAndUnpack
 
             //TcpFixedLengthReceiver.ReceiveFixedLengthData();
             //TcpFixedLengthSender.SendFixedLengthData();
-            var task = Task.Run(TcpFixedLengthReceiver.ReceiveFixedLengthData);
-            var run = Task.Run(TcpFixedLengthSender.SendFixedLengthData);
+            ////var task = Task.Run(TcpFixedLengthReceiver.ReceiveFixedLengthData);
+            ////var run = Task.Run(TcpFixedLengthSender.SendFixedLengthData); 
+            var task = Task.Run(TcpDelimiterReceiver.ReceiveDataWithDelimiter);
+            var run = Task.Run(TcpDelimiterSender.SendDataWithDelimiter);
             Console.ReadLine();
             //while (true)
             //{

@@ -20,35 +20,38 @@ namespace TcpDipAndUnpack.Delimiter
                 // 创建TCP套接字并监听端口
                 TcpListener server = new TcpListener(IPAddress.Parse(ServerIP), ServerPort);
                 server.Start();
-
-                TcpClient client = server.AcceptTcpClient();
-                NetworkStream stream = client.GetStream();
-
-                StringBuilder buffer = new StringBuilder();
-
                 while (true)
                 {
-                    byte[] data = new byte[1024];
-                    int bytesRead = stream.Read(data, 0, 1024);
-                    if (bytesRead == 0)
+                    TcpClient client = server.AcceptTcpClient();
+                    NetworkStream stream = client.GetStream();
+
+                    StringBuilder buffer = new StringBuilder();
+
+                    while (true)
                     {
-                        break;
+                        byte[] data = new byte[1024];
+                        int bytesRead = stream.Read(data, 0, 1024);
+                        if (bytesRead == 0)
+                        {
+                            break;
+                        }
+
+                        buffer.Append(Encoding.ASCII.GetString(data, 0, bytesRead));
+                        string[] messages = buffer.ToString().Split(Delimiter);
+                        for (int i = 0; i < messages.Length - 1; i++)
+                        {
+                            Console.WriteLine($"Received: {messages[i]}");
+                        }
+
+                        buffer.Clear();
+                        buffer.Append(messages[messages.Length - 1]);
                     }
 
-                    buffer.Append(Encoding.ASCII.GetString(data, 0, bytesRead));
-                    string[] messages = buffer.ToString().Split(Delimiter);
-                    for (int i = 0; i < messages.Length - 1; i++)
-                    {
-                        Console.WriteLine($"Received: {messages[i]}");
-                    }
-
-                    buffer.Clear();
-                    buffer.Append(messages[messages.Length - 1]);
+                    stream.Close();
+                    client.Close();
+                    //server.Stop();
                 }
-
-                stream.Close();
-                client.Close();
-                server.Stop();
+                
             }
             catch (Exception e)
             {

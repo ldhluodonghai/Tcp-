@@ -17,22 +17,32 @@ namespace TcpDipAndUnpack.Delimiter
         {
             try
             {
-                // 创建TCP套接字
-                TcpClient client = new TcpClient();
-                client.Connect(ServerIP, ServerPort);
-
-                NetworkStream stream = client.GetStream();
-                string[] messages = { "message1", "message2", "message3" };
-
-                foreach (string msg in messages)
+               
+               
+                while (true)
                 {
-                    string dataToSend = msg + Delimiter;
-                    byte[] data = Encoding.ASCII.GetBytes(dataToSend);
-                    stream.Write(data, 0, data.Length);
-                }
+                    TcpClient client = new TcpClient();
+                    client.Connect(ServerIP, ServerPort);
 
-                stream.Close();
-                client.Close();
+                    NetworkStream stream = client.GetStream();
+                    string[] messages = { "message1", "message2", "message3" };
+                    foreach (var m in messages)
+                    {
+                        Console.WriteLine($"send: {m}");
+                    }
+                    foreach (string msg in messages)
+                    {
+                        string dataToSend = msg + Delimiter;
+                        byte[] data = Encoding.ASCII.GetBytes(dataToSend);
+                        stream.Write(data, 0, data.Length);
+                    }
+
+                    stream.Close();
+                    client.Close();
+                    Thread.Sleep(1000);
+                }
+                // 创建TCP套接字
+                
             }
             catch (Exception e)
             {
