@@ -9,7 +9,7 @@ namespace TcpDipAndUnpack.FixedLeng
     {
         private const int FixedLength = 10;
         private const string ServerIP = "127.0.0.1";
-        private const int ServerPort = 8888;
+        private const int ServerPort = 8880;
 
         public static void ReceiveFixedLengthData()
         {
